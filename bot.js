@@ -76,13 +76,14 @@ fs.readdir(__dirname+"/commands", (err, f) => {
     const s = Date.now();
     for (const file of f) {
         console.log("[CMDS] Reading "+file);
-        if (!file.endsWith(".js")) return;
-        const d = require(`${__dirname}/commands/${file}`);
-        client.commands.set(d.name, d);
-        d.aliases.forEach(alias => {
-            client.aliases.set(alias, d.name);
-        })
-        console.log("[CMDS] Loaded",d.name);
+        if (file.endsWith(".js")) {
+            const d = require(`${__dirname}/commands/${file}`);
+            client.commands.set(d.name, d);
+            d.aliases.forEach(alias => {
+                client.aliases.set(alias, d.name);
+            })
+            console.log("[CMDS] Loaded", d.name);
+        }
     }
     const t = Date.now()-s;
     console.log("[CMDS] Successfully loaded "+f.length+" files in "+t+"ms");
@@ -93,11 +94,12 @@ fs.readdir(__dirname+"/events", (err, f) => {
     const s = Date.now();
     for (const file of f) {
         console.log("[EVNT] Reading "+file);
-        if (!file.endsWith(".js")) return;
-        const d = require(`${__dirname}/events/${file}`);
-        const evn = file.replace(/\.js/g, "");
-        client.on(evn, d.bind(null, client));
-        console.log("[EVNT] Loaded",file);
+        if (file.endsWith(".js")) {
+            const d = require(`${__dirname}/events/${file}`);
+            const evn = file.replace(/\.js/g, "");
+            client.on(evn, d.bind(null, client));
+            console.log("[EVNT] Loaded", file);
+        }
     }
     const t = Date.now()-s;
     console.log("[EVNT] Successfully loaded",f.length,"files in",t+"ms");
