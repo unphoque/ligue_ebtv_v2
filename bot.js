@@ -1,8 +1,10 @@
 //External libraries
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, Collection } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 const XHR = require("xmlhttprequest").XMLHttpRequest;
+
+const fs = require('fs');
 
 //Internal libraries
 const config = require("./config.json");
@@ -66,7 +68,28 @@ const getToornamentAuthorizations = function () {
 }
 
 //Event listeners
-client.on('ready', () => console.log(`Logged in as ${client.user.tag}!`)); //Detect when the bot is logged in.
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setActivity({ name: "Connexion..." });
+    client.user.setStatus("idle");
+    client.cmdData = [];
+    client.commands = [];
+    console.log("[CMDS] Reading commands dir...");
+    fs.readdir(__dirname+"/commands", (err, f) => {
+        if (err) throw "[CMDS] Unable to read commands.";
+        const s = Date.now();
+        for (const file of f) {
+            console.log("[CMDS] Reading "+file);
+            if (!file.endsWith(".js")) return;
+            console.log()
+            const d = require(`${__dirname}/commands/${file}`);
+            client.cmdData.push(d);
+            client.commands.push(d.name);
+        }
+        const t = Date.now()-s;
+        console.log("[CMDS] Successfully loaded "+file.length+" files in "+t+"ms");
+    });
+}); //Detect when the bot is logged in.
 
 client.on('error', console.error); //Avoid killing the bot if an error occur.
 
