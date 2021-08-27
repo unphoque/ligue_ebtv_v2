@@ -3,7 +3,7 @@ Afin de faciliter la communication avec l'api Toornament (#1.2 et #1.3 sur le tr
 
 # Exemple
 ```javascript
-const toornament = require('./toornament');
+const toornament = require('./utils/toornament');
 const c = new toornament("tokenRequest" || null, "tokenParticipant" || null, "apiKey");
 
 // Requête PATCH sur /matches/{id}
