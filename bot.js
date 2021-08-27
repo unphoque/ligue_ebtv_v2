@@ -71,6 +71,9 @@ const getToornamentAuthorizations = function () {
 
 // Load
 
+client.commands = new Collection();
+client.aliases = new Collection();
+console.log("[CMDS] Reading commands dir...");
 fs.readdir(__dirname+"/commands", (err, f) => {
     if (err) throw "[CMDS] Unable to read commands.";
     const s = Date.now();
@@ -110,11 +113,6 @@ fs.readdir(__dirname+"/events", (err, f) => {
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setActivity({ name: "Connexion..." });
-    client.user.setStatus("idle");
-    client.commands = new Collection();
-    client.aliases = new Collection();
-    console.log("[CMDS] Reading commands dir...");
 }); //Detect when the bot is logged in.
 
 client.on('error', console.error); //Avoid killing the bot if an error occur.
