@@ -9,6 +9,7 @@ const fs = require('fs');
 //Internal libraries
 const config = require("./config.json");
 const friendCodes = require("./friend_codes.json");
+client.prefix = "!";
 
 //Environment variables
 process.env.TOORNAMENT_TOKEN_RESULT = "";
@@ -67,43 +68,51 @@ const getToornamentAuthorizations = function () {
     }
 }
 
+
+// Load
+
+fs.readdir(__dirname+"/commands", (err, f) => {
+    if (err) throw "[CMDS] Unable to read commands.";
+    const s = Date.now();
+    for (const file of f) {
+        console.log("[CMDS] Reading "+file);
+        if (!file.endsWith(".js")) return;
+        const d = require(`${__dirname}/commands/${file}`);
+        client.commands.set(d.name, d);
+        d.aliases.forEach(alias => {
+            client.aliases.set(alias, d.name);
+        })
+        console.log("[CMDS] Loaded",d.name);
+    }
+    const t = Date.now()-s;
+    console.log("[CMDS] Successfully loaded "+f.length+" files in "+t+"ms");
+});
+console.log("[EVNT] Reading events dir...");
+fs.readdir(__dirname+"/events", (err, f) => {
+    if (err) throw "[EVNT] Unable to read events.";
+    const s = Date.now();
+    for (const file of f) {
+        console.log("[EVNT] Reading "+file);
+        if (!file.endsWith(".js")) return;
+        const d = require(`${__dirname}/events/${file}`);
+        const evn = file.replace(/\.js/g, "");
+        client.on(evn, d.bind(null, client));
+        console.log("[EVNT] Loaded",file);
+    }
+    const t = Date.now()-s;
+    console.log("[EVNT] Successfully loaded",f.length,"files in",t+"ms");
+});
+
+
 //Event listeners
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setActivity({ name: "Connexion..." });
     client.user.setStatus("idle");
-    client.cmdData = [];
-    client.commands = [];
+    client.commands = new Collection();
+    client.aliases = new Collection();
     console.log("[CMDS] Reading commands dir...");
-    fs.readdir(__dirname+"/commands", (err, f) => {
-        if (err) throw "[CMDS] Unable to read commands.";
-        const s = Date.now();
-        for (const file of f) {
-            console.log("[CMDS] Reading "+file);
-            if (!file.endsWith(".js")) return;
-            const d = require(`${__dirname}/commands/${file}`);
-            client.cmdData.push(d);
-            client.commands.push(d.name);
-            console.log("[CMDS] Loaded",d.name);
-        }
-        const t = Date.now()-s;
-        console.log("[CMDS] Successfully loaded "+f.length+" files in "+t+"ms");
-    });
-    console.log("[EVNT] Reading events dir...");
-    fs.readdir(__dirname+"/events", (err, f) => {
-        if (err) throw "[EVNT] Unable to read events.";
-        const s = Date.now();
-        for (const file of f) {
-            console.log("[EVNT] Reading "+file);
-            if (!file.endsWith(".js")) return;
-            const d = require(`${__dirname}/commands/${file}`);
-            const evn = file.replace(/\.js/g, "");
-            client.on(evn, d);
-            console.log("[EVNT] Loaded",file);
-        }
-        const t = Date.now()-s;
-        console.log("[EVNT] Successfully loaded",f.length,"files in",t+"ms");
-    })
 }); //Detect when the bot is logged in.
 
 client.on('error', console.error); //Avoid killing the bot if an error occur.
