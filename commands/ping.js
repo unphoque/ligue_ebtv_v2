@@ -8,5 +8,6 @@ module.exports = {
     name: "ping",
     aliases: [],
     category: "Debug",
-    description: "Renvoie le ping du bot."
+    description: "Renvoie le ping du bot.",
+    details: "!ping"
 }
