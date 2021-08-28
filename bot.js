@@ -1,6 +1,6 @@
 //External libraries
 const { Client, Intents, Collection } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES] });
 
 const XHR = require("xmlhttprequest").XMLHttpRequest;
 
@@ -100,14 +100,14 @@ fs.readdir(__dirname+"/events", (err, f) => {
         if (file.endsWith(".js")) {
             const d = require(`${__dirname}/events/${file}`);
             const evn = file.replace(/\.js/g, "");
-            client.on(evn, d.bind(null, client));
+            const binded = d.bind(null,client);
+            client.on(evn, binded);
             console.log("[EVNT] Loaded", file);
         }
     }
     const t = Date.now()-s;
     console.log("[EVNT] Successfully loaded",f.length,"files in",t+"ms");
 });
-
 
 //Event listeners
 

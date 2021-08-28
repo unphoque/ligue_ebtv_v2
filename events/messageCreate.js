@@ -1,4 +1,4 @@
-module.exports = (message, client) => {
+module.exports = (client, message) => {
     console.log("msgc")
     if (message.content.startsWith(client.prefix)) {
         const command = message.content.split(" ").slice(client.prefix.length).toLowerCase();
