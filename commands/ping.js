@@ -6,5 +6,7 @@ module.exports = {
         });
     },
     name: "ping",
-    aliases: []
+    aliases: [],
+    category: "Utilitaires",
+    description: "Renvoie le ping du bot."
 }
