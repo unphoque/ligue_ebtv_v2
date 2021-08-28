@@ -1,7 +1,7 @@
 module.exports = (client, message) => {
     console.log("msgc")
     if (message.content.startsWith(client.prefix)) {
-        const command = message.content.split(" ").slice(client.prefix.length).toLowerCase();
+        const command = message.content.split(" ").slice(client.prefix.length)[0].toLowerCase();
         const args = message.content.split(" ").slice(1);
         let cmd;
         if (client.commands.has(command)){
