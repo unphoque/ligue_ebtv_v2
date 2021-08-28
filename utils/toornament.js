@@ -11,13 +11,17 @@ class Toornament {
         this.u = baseURL;
     }
 
+    assignkey(params,key) {
+        return Object.assign({headers: {Authorization: `Bearer ${key}`, "X-Api-Key": this.ak}}, params)
+    }
+
     patch(path, params, key, callback) {
         if (typeof params == "function") {
             callback = params;
             params = {};
         }
 
-        params = Object.assign({ headers: { Authorization: this.keys[key], "X-Api-Key": this.ak } }, params);
+        params = this.assignkey(params, this.keys[key]);
 
         request.patch(this.u+path, params, (e, r, b) => {
             if (e) return callback(e, null);
@@ -25,13 +29,13 @@ class Toornament {
         })
     }
 
-    get(path, params, callback) {
+    get(path, params, key, callback) {
         if (typeof params == "function") {
             callback = params;
             params = {};
         }
 
-        params = Object.assign({ headers: { Authorization: this.keys[key], "X-Api-Key": this.ak }, params });
+        params = this.assignkey(params, this.keys[key]);
 
         request.get(this.u+path, params, (e, r, b) => {
             if (e) return callback(e, null);
@@ -39,13 +43,13 @@ class Toornament {
         })
     }
 
-    post(path, params, callback) {
+    post(path, params, key, callback) {
         if (typeof params == "function") {
             callback = params;
             params = {};
         }
 
-        params = Object.assign({ headers: { Authorization: this.keys[key], "X-Api-Key": this.ak }, params });
+        params = this.assignkey(params, this.keys[key]);
 
         request.post(this.u+path, params, (e, r, b) => {
             if (e) return callback(e, null);
