@@ -7,6 +7,6 @@ module.exports = {
     },
     name: "ping",
     aliases: [],
-    category: "Utilitaires",
+    category: "Debug",
     description: "Renvoie le ping du bot."
 }

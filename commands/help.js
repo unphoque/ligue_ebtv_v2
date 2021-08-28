@@ -5,11 +5,13 @@ module.exports = {
         let categories = {};
         let categoriesnames = [];
         client.commands.each(cmd => {
-            if (!categories[cmd.category]) {
-                categories[cmd.category] = [[cmd.name, cmd.description]];
-                categoriesnames.push(cmd.category);
-            } else {
-                categories[cmd.category].push([cmd.name, cmd.description]);
+            if (cmd.category != "Debug") {
+                if (!categories[cmd.category]) {
+                    categories[cmd.category] = [[cmd.name, cmd.description]];
+                    categoriesnames.push(cmd.category);
+                } else {
+                    categories[cmd.category].push([cmd.name, cmd.description]);
+                }
             }
         });
 
