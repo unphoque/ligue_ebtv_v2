@@ -8,7 +8,7 @@ const c = new toornament("tokenRequest" || null, "tokenParticipant" || null, "ap
 
 // Requête PATCH sur /matches/{id}
 c.patch("matches/insererunidici", {
-    body: {
+    json: {
         public_note: "Hello world!",
         private_note: "hi"        
     }   
