@@ -12,7 +12,7 @@ class Toornament {
     }
 
     assignkey(params,key) {
-        return Object.assign({headers: {Authorization: `Bearer ${key}`, "X-Api-Key": this.ak}}, params)
+        return Object.assign({headers: {Authorization: `Bearer ${key}`, "X-Api-Key": this.ak, "Content-Type": "application/json"}}, params)
     }
 
     patch(path, params, key, callback) {
