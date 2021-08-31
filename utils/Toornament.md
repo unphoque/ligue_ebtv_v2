@@ -12,7 +12,7 @@ c.patch("matches/insererunidici", {
         public_note: "Hello world!",
         private_note: "hi"        
     }   
-}, (error, result) => {
+}, "normal", (error, result) => {
     if (error) throw error;
     console.log(result)
 })
