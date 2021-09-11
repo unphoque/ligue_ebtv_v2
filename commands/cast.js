@@ -7,15 +7,15 @@ module.exports = {
 
         if (!args[1]) {
 
-            message.reply('Utilisation erronnee, deux equipes doivent etre mentionnees. !help castps pour plus d\'informations');
+            message.reply('Utilisation erronnée, deux équipes doivent être mentionnées. !help castps pour plus d\'informations.');
 
         } else if (!CheckCasterAutorisations(message)) {
 
-            message.reply('Pas les autorisations necessaires. Seuls les casters et membres du staff peuvent utiliser cette commande')
+            message.reply('Vous n\'avez pas les autorisations nécessaires. Seuls les casters et membres du staff peuvent utiliser cette commande.')
 
         } else if (!CheckArgumentsSiEquipes(args, message)) {
 
-            message.reply('Deux equipes doivent etre mentionnees avec \"@\". !help castps pour plus d\'informations');
+            message.reply('Deux équipes doivent être mentionnées avec \"@\". !help castps pour plus d\'informations.');
 
         } else if (!CheckIfChannelDoesNotExist(args, message)) {
 
@@ -59,7 +59,11 @@ module.exports = {
                     {
                         id: message.guild.roles.cache.find(role => role.name == 'Staff Ligue'),
                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
-                    },
+                   },
+                   {
+                       id: message.guild.roles.cache.find(role => role.name == 'Caster'),
+                       allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+                   },
                     {
                         id: team1ID,
                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
@@ -71,16 +75,16 @@ module.exports = {
                ],
                parent: '754972428807045121' //category 'CAST PRE-SAISON' ID
 
-            }).then(channel => message.reply('Nouveau salon cree : <#' + channel.id + '>'));
+            }).then(channel => message.reply('Nouveau salon créé : <#' + channel.id + '>'));
 
             return
         }
     },
     name: "castps",
     aliases: [],
-    category: "Creation channel",
-    description: "Permet de creer les canaux ecrits de cast dans Discord",
-    details: "!cast <equipe1> <equipe2>"
+    category: "Cast",
+    description: "Permet de créer les canaux écrits de cast dans Discord, pour la pré-saison",
+    details: "!castps <equipe1> <equipe2>"
 }
 
 function SliceRoleIDFromMention(RoleIDFromMessage) {
