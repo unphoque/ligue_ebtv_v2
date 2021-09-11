@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "discord.js": "^13.1.0",
+    "node": "^16.6.1",
+    "nvm": "0.0.4",
     "request": "^2.88.2",
     "xmlhttprequest": "^1.8.0"
   }
