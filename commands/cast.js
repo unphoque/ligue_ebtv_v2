@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-
+const config = require('../config.json');
 
 //cast pre-saison
 module.exports = {
@@ -7,15 +7,15 @@ module.exports = {
 
         if (!args[1]) {
 
-            message.reply('Utilisation erronnée, deux équipes doivent être mentionnées. !help castps pour plus d\'informations.');
+            message.reply('Utilisation erronnee, deux equipes doivent etre mentionnees. !help castps pour plus d\'informations.');
 
         } else if (!CheckCasterAutorisations(message)) {
 
-            message.reply('Vous n\'avez pas les autorisations nécessaires. Seuls les casters et membres du staff peuvent utiliser cette commande.')
+            message.reply('Vous n\'avez pas les autorisations necessaires. Seuls les casters et membres du staff peuvent utiliser cette commande.')
 
         } else if (!CheckArgumentsSiEquipes(args, message)) {
 
-            message.reply('Deux équipes doivent être mentionnées avec \"@\". !help castps pour plus d\'informations.');
+            message.reply('Deux équipes doivent etre mentionnees avec \"@\". !help castps pour plus d\'informations.');
 
         } else if (!CheckIfChannelDoesNotExist(args, message)) {
 
@@ -49,6 +49,13 @@ module.exports = {
                 channelName = channelName.substring(0, 32);
             }
 
+            let castCategory = null;
+            if (config.DEV_MODE == 'True') {
+                castCategory = '888075288460808242';
+            } else {
+                castCategory = '754972428807045121';
+            }
+
             message.guild.channels.create(channelName, {
                type: "text",
                permissionOverwrites: [
@@ -73,9 +80,9 @@ module.exports = {
                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
                     }
                ],
-               parent: '754972428807045121' //category 'CAST PRE-SAISON' ID
+               parent: castCategory //category 'CAST PRE-SAISON' ID
 
-            }).then(channel => message.reply('Nouveau salon créé : <#' + channel.id + '>'));
+            }).then(channel => message.reply('Nouveau salon cree : <#' + channel.id + '>'));
 
             return
         }
