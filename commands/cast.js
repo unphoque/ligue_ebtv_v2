@@ -1,11 +1,11 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Team } = require('discord.js');
 const config = require('../config.json');
 
 //cast pre-saison
 module.exports = {
     run: (client, message, args) => {
 
-        if (!args[1]) {
+        if (message.mentions.roles.size != 2) {
 
             message.reply('Utilisation erronnee, deux equipes doivent etre mentionnees. !help castps pour plus d\'informations.');
 
@@ -13,47 +13,46 @@ module.exports = {
 
             message.reply('Vous n\'avez pas les autorisations necessaires. Seuls les casters et membres du staff peuvent utiliser cette commande.')
 
-        } else if (!CheckArgumentsSiEquipes(args, message)) {
+        } else if (!CheckIfChannelDoesNotExist(message)) {
 
-            message.reply('Deux équipes doivent etre mentionnees avec \"@\". !help castps pour plus d\'informations.');
-
-        } else if (!CheckIfChannelDoesNotExist(args, message)) {
-
-            const team1ID = SliceRoleIDFromMention(args[0]);
-            const team2ID = SliceRoleIDFromMention(args[1]);
-
-            const team1 = message.guild.roles.cache.get(team1ID);
-            const team2 = message.guild.roles.cache.get(team2ID);
-
-            let channelName = 'cast-' + team1.name + '-' + team2.name;
-            channelName = channelName.replace(/\s+/g, '-').toLowerCase();
-
-            let channel = message.guild.channels.cache.find(channel => channel.name === channelName);
-
-            message.reply('Le salon <#' + channel.id + '> existe deja');
-
-        }
-        else {
-
-
-            const team1ID = SliceRoleIDFromMention(args[0]);
-            const team2ID = SliceRoleIDFromMention(args[1]);
-
-            const team1 = message.guild.roles.cache.get(team1ID);
-            const team2 = message.guild.roles.cache.get(team2ID);
-
-            let channelName = 'cast-' + team1.name + '-' + team2.name;
+            let channelName = 'cast-';
+            let teamNames = [];
+            message.mentions.roles.each(role => teamNames.push(role.name));
+            channelName = channelName + teamNames[0] + '-';
+            channelName = channelName + teamNames[1];
             channelName = channelName.replace(/\s+/g, '-').toLowerCase();
 
             if (channelName.length > 32) {
                 channelName = channelName.substring(0, 32);
             }
 
-            let castCategory = null;
+            let channel = message.guild.channels.cache.find(channel => channel.name === channelName);
+
+            message.reply('Le salon <#' + channel + '> existe deja');
+
+        }
+        else {
+
+            let teamIDs = [];
+            message.mentions.roles.each(role => teamIDs.push(role.id));
+
+            let teamNames = [];
+            message.mentions.roles.each(role => teamNames.push(role.name));
+
+            let channelName = 'cast-';
+            channelName = channelName + teamNames[0] + '-';
+            channelName = channelName + teamNames[1];
+            channelName = channelName.replace(/\s+/g, '-').toLowerCase();
+
+            if (channelName.length > 32) {
+                channelName = channelName.substring(0, 32);
+            }
+
+            let channelCategory = null;
             if (config.DEV_MODE == 'True') {
-                castCategory = '888075288460808242';
+                channelCategory = '888075288460808242';
             } else {
-                castCategory = '754972428807045121';
+                channelCategory = '754972428807045121';
             }
 
             message.guild.channels.create(channelName, {
@@ -72,15 +71,15 @@ module.exports = {
                        allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
                    },
                     {
-                        id: team1ID,
+                        id: teamIDs[0],
                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
                     },
                     {
-                        id: team2ID,
+                        id: teamIDs[1],
                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
                     }
                ],
-               parent: castCategory //category 'CAST PRE-SAISON' ID
+                parent: channelCategory //category 'CAST PRE-SAISON' ID
 
             }).then(channel => message.reply('Nouveau salon cree : <#' + channel.id + '>'));
 
@@ -110,32 +109,19 @@ function CheckCasterAutorisations(message) {
     return resultTest;
 }
 
-function CheckArgumentsSiEquipes(arguments, message) {
+function CheckIfChannelDoesNotExist(message) {
 
     let resultTest = false;
 
-    let role1 = message.guild.roles.cache.find(x => x.id === SliceRoleIDFromMention(arguments[0]));
-    let role2 = message.guild.roles.cache.find(x => x.id === SliceRoleIDFromMention(arguments[1]));
-
-    if (role1 && role2) {
-        resultTest = true;
-    }
-
-    return resultTest;
-}
-
-function CheckIfChannelDoesNotExist(args, message) {
-
-    let resultTest = false;
-
-    const team1ID = SliceRoleIDFromMention(args[0]);
-    const team2ID = SliceRoleIDFromMention(args[1]);
-
-    const team1 = message.guild.roles.cache.get(team1ID);
-    const team2 = message.guild.roles.cache.get(team2ID);
-
-    let channelName = 'cast-' + team1.name + '-' + team2.name;
+    let channelName = 'cast-';
+    let teamNames = [];
+    message.mentions.roles.each(role => teamNames.push(role.name));
+    channelName = channelName + teamNames[0] + '-';
+    channelName = channelName + teamNames[1];
     channelName = channelName.replace(/\s+/g, '-').toLowerCase();
+    if (channelName.length > 32) {
+        channelName = channelName.substring(0, 32);
+    }
 
     let channelExistant = message.guild.channels.cache.find(channel => channel.name === channelName);
 
