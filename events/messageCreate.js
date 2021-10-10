@@ -1,7 +1,8 @@
 module.exports = (client, message) => {
     if (message.content.startsWith(client.prefix)) {
-        const command = message.content.split(" ")[0].slice(client.prefix.length).toLowerCase();
-        const args = message.content.split(" ").slice(1);
+        content = message.content.replace("  ", " ");
+        const command = content.split(" ")[0].slice(client.prefix.length).toLowerCase();
+        const args = content.split(" ").slice(1);
         let cmd;
         if (client.commands.has(command)){
             cmd=client.commands.get(command);
