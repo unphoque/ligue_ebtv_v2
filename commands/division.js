@@ -57,3 +57,12 @@ module.exports = {
     description: "Permet de creer ou supprimer les Divisions sur le serveur Discord (role et canaux ecrits), et d'assigner les equipes a leur division",
     details: "!div <commande>"
 }
+
+getAllDivisions = function () {
+    let toornament = new Toornament();
+    toornament.get("stages?tournament_ids=" + process.env.TOORNAMENT, params = {"Range":"stages=0-49"}, key = "normal", callback = createAllDivisions);
+};
+
+createAllDivisions = function (error, responseBody) {
+    console.log(responseBody);
+};

@@ -14,6 +14,7 @@ client.prefix = "!";
 //Environment variables
 process.env.TOORNAMENT_TOKEN_RESULT = "";
 process.env.TOORNAMENT_TOKEN_PARTICIPANT = "";
+process.env.TOORNAMENT = "4295660679430397952";
 
 //Functions
 const login = function(nbTries = 0) {
