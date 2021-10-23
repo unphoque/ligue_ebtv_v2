@@ -1,6 +1,6 @@
 module.exports = (client, message) => {
     if (message.content.startsWith(client.prefix)) {
-        content = message.content.replace("  ", " ");
+        content = message.content.replaceAll("  ", " ");
         const command = content.split(" ")[0].slice(client.prefix.length).toLowerCase();
         const args = content.split(" ").slice(1);
         let cmd;
