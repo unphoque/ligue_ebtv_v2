@@ -1,11 +1,11 @@
 const request = require('request');
 
 class Toornament {
-    constructor(tokenRequest, tokenParticipant, apiKey, baseURL = "https://api.toornament.com/") {
+    constructor(tokenRequest, tokenParticipant, apiKey, baseURL = "https://api.toornament.com/organizer/v2/") {
         if (!apiKey) throw new Error("Merci d'inclure une clé d'API.");
         this.keys = {
-            normal: tokenRequest || null,
-            participant: tokenParticipant || null
+            "normal": tokenRequest || null,
+            "participant": tokenParticipant || null
         }
         this.ak = apiKey;
         this.u = baseURL;
