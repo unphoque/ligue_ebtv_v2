@@ -31,7 +31,7 @@ module.exports = {
                     let teamNames = [];
                     message.mentions.roles.each(role => teamNames.push(role.name));
                     if (teamNames.length != 2) {
-                        message.reply('Erreur : il faut mentionner deux roles d\'equipe.');
+                        message.reply('Erreur : il faut mentionner deux roles d\'équipe.');
                         return;
                     }
 

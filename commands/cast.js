@@ -7,7 +7,7 @@ module.exports = {
     run: (client, message, args) => {
 
         if (!CheckAutorisations(message)) {
-            message.reply('Vous n\'avez pas les autorisations necessaires. Seuls les membres du staff peuvent utiliser cette commande.')
+            message.reply('Vous n\'avez pas les autorisations nécessaires. Seuls les membres du staff peuvent utiliser cette commande.')
             return;
         }
 

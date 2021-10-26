@@ -7,11 +7,11 @@ module.exports = {
 
         if (message.mentions.roles.size != 2) {
 
-            message.reply('Utilisation erronnee, deux equipes doivent etre mentionnees. !help castps pour plus d\'informations.');
+            message.reply('Utilisation erronnée, deux équipes doivent etre mentionnées. !help castps pour plus d\'informations.');
 
         } else if (!CheckCasterAutorisations(message)) {
 
-            message.reply('Vous n\'avez pas les autorisations necessaires. Seuls les casters et membres du staff peuvent utiliser cette commande.')
+            message.reply('Vous n\'avez pas les autorisations nécessaires. Seuls les casters et membres du staff peuvent utiliser cette commande.')
 
         } else if (!CheckIfChannelDoesNotExist(message)) {
 
@@ -28,7 +28,7 @@ module.exports = {
 
             let channel = message.guild.channels.cache.find(channel => channel.name === channelName);
 
-            message.reply('Le salon <#' + channel + '> existe deja');
+            message.reply('Le salon <#' + channel + '> existe déjà');
 
         }
         else {
@@ -85,7 +85,7 @@ module.exports = {
                ],
                 parent: channelCategory //category 'CAST PRE-SAISON' ID
 
-            }).then(channel => message.reply('Nouveau salon cree : <#' + channel.id + '>'));
+            }).then(channel => message.reply('Nouveau salon créé : <#' + channel.id + '>'));
 
             return
         }
