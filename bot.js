@@ -1,6 +1,7 @@
 //External libraries
 const { Client, Intents, Collection } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const chalk = require('chalk');
 
 const XHR = require("xmlhttprequest").XMLHttpRequest;
 
@@ -71,42 +72,44 @@ const getToornamentAuthorizations = function () {
 
 // Load
 
+const cp = chalk.green("[CMDS] ")+chalk.reset();
+const ep = chalk.green("[EVNT] ")+chalk.reset();
 client.commands = new Collection();
 client.aliases = new Collection();
-console.log("[CMDS] Reading commands dir...");
+console.log(cp+"Reading commands dir...");
 fs.readdir(__dirname+"/commands", (err, f) => {
-    if (err) throw "[CMDS] Unable to read commands.";
+    if (err) throw cp+"Unable to read commands.";
     const s = Date.now();
     for (const file of f) {
-        console.log("[CMDS] Reading "+file);
+        console.log(cp+"Reading "+file);
         if (file.endsWith(".js")) {
             const d = require(`${__dirname}/commands/${file}`);
             client.commands.set(d.name, d);
             d.aliases.forEach(alias => {
                 client.aliases.set(alias, d.name);
             })
-            console.log("[CMDS] Loaded", d.name);
+            console.log(cp+"Loaded", d.name);
         }
     }
     const t = Date.now()-s;
-    console.log("[CMDS] Successfully loaded "+f.length+" files in "+t+"ms");
+    console.log(cp+"Successfully loaded "+f.length+" files in "+t+"ms");
 });
-console.log("[EVNT] Reading events dir...");
+console.log(ep+"Reading events dir...");
 fs.readdir(__dirname+"/events", (err, f) => {
-    if (err) throw "[EVNT] Unable to read events.";
+    if (err) throw ep+"Unable to read events.";
     const s = Date.now();
     for (const file of f) {
-        console.log("[EVNT] Reading "+file);
+        console.log(ep+"Reading "+file);
         if (file.endsWith(".js")) {
             const d = require(`${__dirname}/events/${file}`);
             const evn = file.replace(/\.js/g, "");
             const binded = d.bind(null,client);
             client.on(evn, binded);
-            console.log("[EVNT] Loaded", file);
+            console.log(ep+"Loaded", file);
         }
     }
     const t = Date.now()-s;
-    console.log("[EVNT] Successfully loaded",f.length,"files in",t+"ms");
+    console.log(ep+"Successfully loaded",f.length,"files in",t+"ms");
 });
 
 //Event listeners
