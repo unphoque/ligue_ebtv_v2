@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceRoot": "src",
+    "rootDir": "src",
     "outDir": "dist",
   },
   "exclude": [
