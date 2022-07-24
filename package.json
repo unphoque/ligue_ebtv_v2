@@ -19,5 +19,9 @@
   "homepage": "https://github.com/unphoque/ligue_ebtv_v2#readme",
   "devDependencies": {
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "discord.js": "^14.0.3"
   }
 }
